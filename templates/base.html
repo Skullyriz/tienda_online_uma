@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block titulo %}Tienda Online UMA{% endblock %}
+    </title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- CSS personalizado -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <div class="container">
+
+        <!-- Logo / nombre de la tienda -->
+
+        <a
+            class="navbar-brand"
+            href="{{ url_for('inicio') }}"
+        >
+            🛒 Tienda Online UMA
+        </a>
+
+
+        <!-- Botón para dispositivos móviles -->
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Mostrar navegación"
+        >
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+
+        <!-- Menú -->
+
+        <div
+            class="collapse navbar-collapse"
+            id="navbarNav"
+        >
+
+
+            <!-- ====================================================
+                 MENÚ PRINCIPAL
+                 ==================================================== -->
+
+            <ul class="navbar-nav me-auto">
+
+
+                <!-- Inicio -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('inicio') }}"
+                    >
+                        🏠 Inicio
+                    </a>
+
+                </li>
+
+
+                <!-- =================================================
+                     PANEL ADMINISTRADOR
+                     ================================================= -->
+
+                {% if session.get('usuario_rol') == 'admin' %}
+
+                <li class="nav-item dropdown">
+
+                    <a
+                        class="nav-link dropdown-toggle"
+                        href="#"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        ⚙️ Panel Admin
+                    </a>
+
+
+                    <ul class="dropdown-menu">
+
+
+                        <li>
+
+                            <a
+                                class="dropdown-item"
+                                href="{{ url_for('nuevo_producto_fisico') }}"
+                            >
+                                📦 Producto Físico
+                            </a>
+
+                        </li>
+
+
+                        <li>
+
+                            <a
+                                class="dropdown-item"
+                                href="{{ url_for('nuevo_producto_digital') }}"
+                            >
+                                💻 Producto Digital
+                            </a>
+
+                        </li>
+
+
+                        <li>
+
+                            <a
+                                class="dropdown-item"
+                                href="{{ url_for('nuevo_producto_perecible') }}"
+                            >
+                                🍎 Producto Perecible
+                            </a>
+
+                        </li>
+
+
+                    </ul>
+
+                </li>
+
+                {% endif %}
+
+
+                <!-- =================================================
+                     CARRITO DEL CLIENTE
+                     ================================================= -->
+
+                {% if session.get('usuario_rol') == 'cliente' %}
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('ver_carrito') }}"
+                    >
+                        🛍️ Mi carrito
+                    </a>
+
+                </li>
+
+                {% endif %}
+
+
+            </ul>
+
+
+            <!-- ====================================================
+                 MENÚ DE USUARIO
+                 ==================================================== -->
+
+            <ul class="navbar-nav">
+
+
+                <!-- Usuario conectado -->
+
+                {% if session.get('usuario_id') %}
+
+
+                <li class="nav-item">
+
+                    <span class="nav-link">
+
+                        👤 Hola,
+                        {{ session.get('usuario_nombre') }}
+
+                    </span>
+
+                </li>
+
+
+                <!-- Mostrar rol -->
+
+                <li class="nav-item">
+
+                    {% if session.get('usuario_rol') == 'admin' %}
+
+                    <span class="nav-link text-warning">
+                        Administrador
+                    </span>
+
+                    {% elif session.get('usuario_rol') == 'cliente' %}
+
+                    <span class="nav-link text-info">
+                        Cliente
+                    </span>
+
+                    {% endif %}
+
+                </li>
+
+
+                <!-- Cerrar sesión -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('logout') }}"
+                    >
+                        🚪 Cerrar sesión
+                    </a>
+
+                </li>
+
+
+                {% else %}
+
+
+                <!-- ================================================
+                     VISITANTE
+                     ================================================ -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('login') }}"
+                    >
+                        🔐 Iniciar sesión
+                    </a>
+
+                </li>
+
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('registro') }}"
+                    >
+                        📝 Registrarse
+                    </a>
+
+                </li>
+
+
+                {% endif %}
+
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ============================================================
+     CONTENIDO PRINCIPAL
+     ============================================================ -->
+
+<main class="container mt-4 mb-5">
+
+
+    <!-- =========================================================
+         MENSAJES FLASH
+         ========================================================= -->
+
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+
+        {% if mensajes %}
+
+            {% for categoria, mensaje in mensajes %}
+
+            <div
+                class="alert alert-{{ categoria }} alert-dismissible fade show"
+                role="alert"
+            >
+
+                {{ mensaje }}
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Cerrar"
+                ></button>
+
+            </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+
+    <!-- =========================================================
+         CONTENIDO DE CADA PÁGINA
+         ========================================================= -->
+
+    {% block content %}
+
+    {% endblock %}
+
+
+</main>
+
+
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+
+<footer>
+
+    <div class="container text-center">
+
+        <h5 class="mb-2">
+            🛒 Tienda Online UMA
+        </h5>
+
+        <p class="mb-2 text-white-50">
+            Plataforma de productos físicos,
+            digitales y perecibles.
+        </p>
+
+        <small class="text-white-50">
+            Proyecto académico · Semana 3
+        </small>
+
+    </div>
+
+</footer>
+
+
+
+<!-- ============================================================
+     BOOTSTRAP JAVASCRIPT
+     ============================================================ -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+{{ producto.nombre }} - Tienda Online UMA
+{% endblock %}
+
+{% block content %}
+
+<div class="mb-4">
+
+    <a
+        href="{{ url_for('inicio') }}"
+        class="btn btn-outline-secondary"
+    >
+        ← Volver al catálogo
+    </a>
+
+</div>
+
+
+<div class="row g-4">
+
+    <div class="col-lg-6">
+
+        {% if producto.imagen %}
+
+        <div class="card border-0 shadow-sm overflow-hidden">
+
+            <img
+                src="{{ url_for('static', filename='uploads/' + producto.imagen) }}"
+                class="img-fluid detail-image"
+                alt="{{ producto.nombre }}"
+            >
+
+        </div>
+
+        {% else %}
+
+        <div class="detail-placeholder">
+
+            <div class="display-1">
+                📦
+            </div>
+
+            <p class="text-muted">
+                Este producto todavía no tiene imagen.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="col-lg-6">
+
+        <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-body p-4 p-lg-5">
+
+                <span class="badge bg-primary mb-3">
+                    {{ producto.tipo }}
+                </span>
+
+                <h1 class="fw-bold mb-3">
+                    {{ producto.nombre }}
+                </h1>
+
+                <p class="text-muted">
+                    Código: {{ producto.codigo }}
+                </p>
+
+                <div class="mb-4">
+
+                    <span class="display-6 fw-bold text-primary">
+                        ${{ "%.2f"|format(producto.precio_final()) }}
+                    </span>
+
+                </div>
+
+                <div class="row g-3 mb-4">
+
+                    <div class="col-6">
+
+                        <div class="info-box">
+
+                            <small class="text-muted">
+                                Stock
+                            </small>
+
+                            <div class="fw-bold fs-5">
+                                {{ producto.stock }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-6">
+
+                        <div class="info-box">
+
+                            <small class="text-muted">
+                                Estado
+                            </small>
+
+                            {% if producto.stock > 0 %}
+
+                            <div class="fw-bold text-success">
+                                Disponible
+                            </div>
+
+                            {% else %}
+
+                            <div class="fw-bold text-danger">
+                                Sin stock
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                {% if producto.tipo == "fisico" %}
+
+                <div class="mb-3">
+
+                    <strong>Peso:</strong>
+                    {{ producto.peso_kg }} kg
+
+                </div>
+
+                <div class="mb-3">
+
+                    <strong>Costo de envío por kg:</strong>
+                    ${{ "%.2f"|format(producto.costo_envio_por_kg) }}
+
+                </div>
+
+                {% elif producto.tipo == "digital" %}
+
+                <div class="mb-3">
+
+                    <strong>Licencia:</strong>
+                    {{ producto.licencia }}
+
+                </div>
+
+                {% elif producto.tipo == "perecible" %}
+
+                <div class="mb-3">
+
+                    <strong>Días para vencer:</strong>
+                    {{ producto.dias_para_vencer }}
+
+                </div>
+
+                {% endif %}
+
+
+                <hr class="my-4">
+
+
+                {% if session.get('usuario_rol') == 'cliente' and producto.stock > 0 %}
+
+                <form
+                    action="{{ url_for('agregar_carrito', producto_id=producto.id) }}"
+                    method="POST"
+                >
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-lg w-100"
+                    >
+                        🛍️ Agregar al carrito
+                    </button>
+
+                </form>
+
+                {% endif %}
+
+
+                {% if session.get('usuario_rol') == 'admin' %}
+
+                <div class="d-grid gap-2">
+
+                    <a
+                        href="{{ url_for('editar_producto', producto_id=producto.id) }}"
+                        class="btn btn-warning"
+                    >
+                        ✏️ Editar producto
+                    </a>
+
+                    <form
+                        action="{{ url_for('eliminar_producto', producto_id=producto.id) }}"
+                        method="POST"
+                    >
+
+                        <button
+                            type="submit"
+                            class="btn btn-outline-danger w-100"
+                            onclick="return confirm('¿Seguro que deseas desactivar este producto?');"
+                        >
+                            🗑️ Desactivar producto
+                        </button>
+
+                    </form>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
