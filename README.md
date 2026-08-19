@@ -2,7 +2,7 @@
 
 Aplicación web desarrollada con Python, Flask y PostgreSQL como proyecto académico. El sistema permite administrar un catálogo de productos físicos, digitales y perecibles, gestionar usuarios por roles y realizar compras mediante un carrito.
 
-🚀 Características
+# 🚀 Características
 Registro e inicio de sesión de usuarios.
 Contraseñas almacenadas de forma segura mediante hash.
 Sistema de roles:
@@ -24,7 +24,7 @@ Control de acceso mediante decoradores personalizados.
 Mensajes de éxito y error mediante flash().
 Diseño responsive utilizando Bootstrap.
 Interfaz personalizada mediante CSS.
-🛠️ Tecnologías utilizadas
+# 🛠️ Tecnologías utilizadas
 Python 3
 Flask
 Flask-SQLAlchemy
@@ -35,7 +35,7 @@ Bootstrap 5
 Jinja2
 Werkzeug
 Git / GitHub
-📁 Estructura del proyecto
+# 📁 Estructura del proyecto
 tienda_online_uma/
 │
 ├── app.py
@@ -61,7 +61,7 @@ tienda_online_uma/
     ├── nuevo_fisico.html
     ├── nuevo_digital.html
     └── nuevo_perecible.html
-⚙️ Instalación
+# ⚙️ Instalación
 
 Clona el repositorio:
 
@@ -99,7 +99,7 @@ SECRET_KEY=TU_SECRET_KEY
 
 El archivo .env no debe subirse al repositorio.
 
-▶️ Ejecutar la aplicación
+# ▶️ Ejecutar la aplicación
 
 Activa el entorno virtual:
 
@@ -112,7 +112,7 @@ python app.py
 Después abre:
 
 http://127.0.0.1:5000
-👤 Roles
+# 👤 Roles
 Administrador
 
 El administrador puede:
@@ -131,7 +131,7 @@ Ver detalles de productos.
 Agregar productos al carrito.
 Consultar el carrito.
 Eliminar productos del carrito.
-🖼️ Imágenes
+# 🖼️ Imágenes
 
 Las imágenes de los productos se almacenan en:
 
@@ -147,7 +147,7 @@ WEBP
 
 Las imágenes se renombran automáticamente para evitar conflictos entre archivos.
 
-🔐 Seguridad
+# 🔐 Seguridad
 
 El proyecto utiliza decoradores personalizados para controlar el acceso:
 
@@ -159,7 +159,7 @@ y:
 
 De esta manera, las rutas administrativas no pueden ser utilizadas por usuarios que no tengan los permisos correspondientes.
 
-📱 Diseño
+# 📱 Diseño
 
 La interfaz utiliza Bootstrap para obtener un diseño adaptable a computadoras, tablets y teléfonos móviles.
 
@@ -173,7 +173,7 @@ Imágenes.
 Navbar.
 Footer.
 Diseño responsive.
-🎓 Proyecto académico
+# 🎓 Proyecto académico
 
 Tienda Online UMA es un proyecto académico desarrollado para aplicar conceptos de:
 
