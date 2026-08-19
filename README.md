@@ -1,4 +1,4 @@
-Tienda Online UMA
+#Tienda Online UMA
 
 Aplicación web desarrollada con Python, Flask y PostgreSQL como proyecto académico. El sistema permite administrar un catálogo de productos físicos, digitales y perecibles, gestionar usuarios por roles y realizar compras mediante un carrito.
 
